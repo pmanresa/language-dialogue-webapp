@@ -1,0 +1,92 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2
+jobs:
+  build:
+    branches:
+      only:
+        - master
+    docker:
+      - image: webpackcontrib/circleci-jdk9-node8
+
+    working_directory: ~/repo
+    environment:
+      - SOURCE_BRANCH: master
+      - TARGET_BRANCH: gh-pages
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run: npm install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      # run tests!
+      # - run: npm run test
+
+      - deploy:
+          name: Deploy
+          command: |
+            if [ $CIRCLE_BRANCH == $SOURCE_BRANCH ]; then
+              git config --global user.email $GH_EMAIL
+              git config --global user.name $GH_NAME
+              git clone $CIRCLE_REPOSITORY_URL out
+              cd out
+              git checkout $TARGET_BRANCH || git checkout --orphan $TARGET_BRANCH
+              git rm -rf .
+              cd ..
+              npm run build
+              cp -a build/. out/.
+              mkdir -p out/.circleci && cp -a .circleci/. out/.circleci/.
+              cd out
+              git add -A
+              git commit -m "Automated deployment to GitHub Pages: ${CIRCLE_SHA1}" --allow-empty
+              git push origin $TARGET_BRANCH
+            fi
+      - run:
+          name: Deploying test results to codecov.io
+          command: bash <(curl -s https://codecov.io/bash)
+
+      - run:
+          name: download Sonatype CLI
+          command: wget https://download.sonatype.com/clm/scanner/latest.jar -O nexus-iq-cli.jar
+
+      - run:
+          name: create Sonatype report
+          command: |
+            java -jar nexus-iq-cli.jar \
+            -i $SONATYPE_NEXUS_IQ_APPLICATION_NAME \
+            -s $SONATYPE_NEXUS_IQ_SERVER_URL \
+            -a $SONATYPE_NEXUS_IQ_USERNAME:$SONATYPE_NEXUS_IQ_PASSWORD \
+            --stage Release \
+            -w \
+            --result-file sonatype_links.json \
+            node_modules
+          environment:
+            SONATYPE_NEXUS_IQ_APPLICATION_NAME: starter-web
+      - run:
+          name: install jq
+          command: |
+            sudo apt-get -y install jq
+      - run:
+          name: download reports
+          command: |
+            reportDataUrl=$(jq -r '.reportDataUrl' sonatype_links.json)
+            cat sonatype_links.json
+            curl -u admin:admin123 -X GET "$reportDataUrl" > sonatype_report.json
+      - store_artifacts:
+          path: sonatype_links.json
+      - store_artifacts:
+          path: sonatype_report.json
