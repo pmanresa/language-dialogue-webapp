@@ -15,8 +15,8 @@ import PlayArrow from '@material-ui/icons/PlayArrow';
 import 'bootstrap/dist/css/bootstrap.css';
 
 export const TITLE = "Language Dialogue Converter";
-export const HEADER_URL = "http://127.0.0.1:5000/";
-export const SYNTHESIZE_ENDPOINT = "synthesize/";
+export const HEADER_URL = "https://language-dialogue-server.herokuapp.com/";
+export const SYNTHESIZE_ENDPOINT = "synthesize";
 
 export default class App extends React.Component {
 
@@ -25,7 +25,7 @@ export default class App extends React.Component {
 
     this.state = {
       isDownloading: false,
-      isPlaying: false,
+      // isPlaying: false,
       formData: {
         text1: '',
         text2: '',
@@ -65,7 +65,6 @@ export default class App extends React.Component {
     fetch(HEADER_URL + SYNTHESIZE_ENDPOINT,
         {
           headers: {
-            'Accept': 'application/json',
             'Content-Type': 'application/json'
           },
           method: 'POST',
@@ -80,30 +79,30 @@ export default class App extends React.Component {
         });
   };
 
-  handlePlayClick = (event) => {
-    const formData = this.state.formData;
-    this.setState({isPlaying: true});
-    fetch(HEADER_URL + SYNTHESIZE_ENDPOINT,
-        {
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          method: 'POST',
-          body: JSON.stringify(formData)
-        })
-        .then(response => response.json())
-        .then(response => {
-          this.setState({
-            result: response.result,
-            isPlaying: false
-          });
-        });
-  };
+  // handlePlayClick = (event) => {
+  //   const formData = this.state.formData;
+  //   this.setState({isPlaying: true});
+  //   fetch(HEADER_URL + SYNTHESIZE_ENDPOINT,
+  //       {
+  //         headers: {
+  //           'Accept': 'application/json',
+  //           'Content-Type': 'application/json'
+  //         },
+  //         method: 'POST',
+  //         body: JSON.stringify(formData)
+  //       })
+  //       .then(response => response.json())
+  //       .then(response => {
+  //         this.setState({
+  //           result: response.result,
+  //           isPlaying: false
+  //         });
+  //       });
+  // };
 
   render() {
     const isDownloading = this.state.isDownloading;
-    const isPlaying = this.state.isPlaying;
+    // const isPlaying = this.state.isPlaying;
     const formData = this.state.formData;
     const result = this.state.result;
 
@@ -387,20 +386,21 @@ export default class App extends React.Component {
                 </Button>
               </Row>
 
-              <Row>
+              {/*<Row>*/}
 
-                <Button
-                    variant="contained"
-                    color="default"
-                    disabled={isPlaying}
-                    onClick={!isPlaying ? this.handlePlayClick : null}
-                    className={classes.button}>
-                  {
-                    isPlaying ? 'Pause' : 'Play Dialogue'
-                  }
-                  <PlayArrow className={classes.rightIcon}/>
-                </Button>
-              </Row>
+              {/*  <Button*/}
+              {/*      variant="contained"*/}
+              {/*      color="default"*/}
+              {/*      disabled={isPlaying}*/}
+              {/*      onClick={!isPlaying ? this.handlePlayClick : null}*/}
+              {/*      className={classes.button}>*/}
+              {/*    {*/}
+              {/*      isPlaying ? 'Pause' : 'Play Dialogue'*/}
+              {/*    }*/}
+              {/*    <PlayArrow className={classes.rightIcon}/>*/}
+              {/*  </Button>*/}
+              {/*</Row>*/}
+
             </Form>
 
           </div>
