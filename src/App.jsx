@@ -11,7 +11,6 @@ import Row from 'react-bootstrap/Row';
 import {makeStyles} from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import GetAppRounded from '@material-ui/icons/GetAppRounded'
-import PlayArrow from '@material-ui/icons/PlayArrow';
 import 'bootstrap/dist/css/bootstrap.css';
 
 export const TITLE = "Language Dialogue Converter";
