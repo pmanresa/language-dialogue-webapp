@@ -15,8 +15,8 @@ import PlayArrow from '@material-ui/icons/PlayArrow';
 import 'bootstrap/dist/css/bootstrap.css';
 
 export const TITLE = "Language Dialogue Converter";
-export const HEADER_URL = "http://127.0.0.1:5000/";
-export const SYNTHESIZE_ENDPOINT = "synthesize/";
+export const HEADER_URL = "https://language-dialogue-server.herokuapp.com/";
+export const SYNTHESIZE_ENDPOINT = "synthesize";
 
 export default class App extends React.Component {
 
