@@ -57,8 +57,8 @@ export default class App extends React.Component {
       formData
     });
   };
-
-  handleDownloadClick = (event) => {
+  
+  handleDownloadClick = () => {
     const formData = this.state.formData;
     this.setState({isDownloading: true});
     fetch(HEADER_URL + SYNTHESIZE_ENDPOINT,
@@ -75,29 +75,23 @@ export default class App extends React.Component {
             result: response.result,
             isDownloading: false
           });
+          this.download()
         });
   };
 
-  // handlePlayClick = (event) => {
-  //   const formData = this.state.formData;
-  //   this.setState({isPlaying: true});
-  //   fetch(HEADER_URL + SYNTHESIZE_ENDPOINT,
-  //       {
-  //         headers: {
-  //           'Accept': 'application/json',
-  //           'Content-Type': 'application/json'
-  //         },
-  //         method: 'POST',
-  //         body: JSON.stringify(formData)
-  //       })
-  //       .then(response => response.json())
-  //       .then(response => {
-  //         this.setState({
-  //           result: response.result,
-  //           isPlaying: false
-  //         });
-  //       });
-  // };
+  download() {
+    // fake server request, getting the file url as response
+    setTimeout(() => {
+      const response = {
+        file: this.state.result,
+      };
+      // server sent the url to the file!
+      // now, let's download:
+      // window.location.href = response.file;
+      // you could also do:
+      window.open(response.file);
+    }, 100);
+  };
 
   render() {
     const isDownloading = this.state.isDownloading;
