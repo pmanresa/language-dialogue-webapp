@@ -222,6 +222,8 @@ export default class App extends React.Component {
                     <option value="ru-RU-Wavenet-B">ru-RU-B Male</option>
                     <option value="ru-RU-Wavenet-C">ru-RU-C Female</option>
                     <option value="ru-RU-Wavenet-D">ru-RU-D Male</option>
+
+                    <option value="uk-UA-Wavenet-A">uk-UA-A Female</option>
                   </Form.Control>
                 </Form.Group>
 
@@ -253,6 +255,8 @@ export default class App extends React.Component {
                     <option value="ru-RU-Wavenet-B">ru-RU-B Male</option>
                     <option value="ru-RU-Wavenet-C">ru-RU-C Female</option>
                     <option value="ru-RU-Wavenet-D">ru-RU-D Male</option>
+
+                    <option value="uk-UA-Wavenet-A">uk-UA-A Female</option>
                   </Form.Control>
                 </Form.Group>
               </Form.Row>
